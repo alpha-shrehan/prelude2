@@ -120,6 +120,10 @@ rao_to_i32(rao_t r)
         v = 1 << 31;
     if (r.meta.deref)
         v |= 1 << 30;
+    if (r.meta.imm[0])
+        v |= 1 << 29;
+    if (r.meta.imm[1])
+        v |= 1 << 28;
 
     v |= r.step & 0x1F;
     v |= (r.rval & 0x3FF) << 5;

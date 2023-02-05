@@ -57,15 +57,22 @@ void test3()
             .v = {
                 .idbl =
                     pl_inst_mov_new(
-                        pl_reg_make_rao(PL_REG_EAX, 0, 0), 
-                        pl_reg_make_rao(PL_REG_EBX, 0, 0), 0)}},
+                        pl_reg_make_rao_withU(PL_REG_EAX, 0, 0, 8), 
+                        pl_reg_make_rao_withU(PL_REG_EBX, 0, 0, 8), 0)}},
         (inst_t){
             1,
             .v = {
                 .idbl =
                     pl_inst_add_new(
-                        pl_reg_make_rao(PL_REG_EAX, 0, 0),
-                        pl_reg_make_rao(PL_REG_EBX, 0, 0), 0)}},
+                        pl_reg_make_rao_withU(PL_REG_EAX, 0, 0, 8),
+                        pl_reg_make_rao_withU(PL_REG_EBX, 0, 0, 8), 0)}},
+        (inst_t) {
+            1,
+            .v = {
+                .idbl = 
+                    pl_inst_mov_new(
+                        pl_reg_make_rao_withU(PL_REG_ECX, 0, 0, 8),
+                        pl_reg_make_rao_withU(PL_REG_R7, 0, 0, 8), 0)}},
         (inst_t) {
             0,
             .v = {
@@ -95,6 +102,7 @@ void test3()
     // }
 
     printf("%d\n", pl_reg_get_register(PL_REG_EAX));
+    printf("%d\n", pl_reg_get_register(PL_REG_ECX));
 }
 
 int main(int argc, char const *argv[])

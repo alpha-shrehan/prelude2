@@ -121,6 +121,11 @@ pl_reg_make_rao(
 
     r.meta.sign_bit = step < 0;
     r.meta.deref = false;
+    r.meta.imm[0] = false;
+    r.meta.imm[1] = false;
+    r.meta.sizes[0] = false;
+    r.meta.sizes[1] = false;
+    r.meta.sizes[2] = false;
 
     return r;
 }
@@ -139,15 +144,40 @@ PL_API rao_t
 pl_reg_rao_i32_to_rao(int32_t v)
 {
     rao_t r;
-    r.lval = 0;
+
+    r.lval = (v >> 15) & 0x3FF;
+    r.rval = (v >> 5) & 0x3FF;
+    r.step = v & 0x1F;
     r.meta.sign_bit = (v >> 31) & 0x1;
     r.meta.deref = (v >> 30) & 0x1;
-    r.rval = 0;
-    r.step = 0;
+    r.meta.imm[0] = (v >> 29) & 0x1;
+    r.meta.imm[1] = (v >> 28) & 0x1;
+    r.meta.sizes[0] = (v >> 27) & 0x1;
+    r.meta.sizes[1] = (v >> 26) & 0x1;
+    r.meta.sizes[2] = (v >> 25) & 0x1;
 
-    r.step = v & 0x1F;
-    r.rval = (v >> 5) & 0x3FF;
-    r.lval = (v >> 15) & 0x3FF;
+    return r;
+}
+
+PL_API rao_t 
+pl_reg_make_rao_withU(
+    int16_t lval,
+    int16_t rval,
+    int8_t step,
+    int8_t U)
+{
+    rao_t r;
+    r.lval = lval;
+    r.rval = rval;
+    r.step = abs(step);
+
+    r.meta.sign_bit = (U >> 6) & 0x1;
+    r.meta.deref = (U >> 5) & 0x1;
+    r.meta.imm[0] = (U >> 4) & 0x1;
+    r.meta.imm[1] = (U >> 3) & 0x1;
+    r.meta.sizes[0] = (U >> 2) & 0x1;
+    r.meta.sizes[1] = (U >> 1) & 0x1;
+    r.meta.sizes[2] = U & 0x1;
 
     return r;
 }

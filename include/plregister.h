@@ -59,6 +59,8 @@ struct _pl_reg_operand_str
     {
         bool sign_bit;
         bool deref;
+        bool imm[2]; /* lval, rval */
+        bool sizes[3]; /* 32, 16, 8 */
     } meta;
 };
 
@@ -112,6 +114,17 @@ extern "C"
      * @return rao_t
      */
     PL_API rao_t pl_reg_make_rao(int16_t, int16_t, int8_t);
+
+    /**
+     * @brief Make RaO from data and U flag given explicitly
+     * 
+     * @param lval
+     * @param rval
+     * @param step
+     * @param U
+     * @return PL_API 
+     */
+    PL_API rao_t pl_reg_make_rao_withU(int16_t, int16_t, int8_t, int8_t);
 
     /**
      * @brief RaO.__str__()
